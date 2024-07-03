@@ -4,6 +4,7 @@ import { RxCrossCircled } from "react-icons/rx";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BASE_URL } from "../Url_Config";
 
 export default function TaskTile({ details, onDelete }) {
     const [editingRow, setEditingRow] = useState(null);
@@ -21,7 +22,7 @@ export default function TaskTile({ details, onDelete }) {
     const handleConfirmClick = async (index) => {
         try {
             const updatedTask = editDetails[index];
-            const response = await axios.put(`http://localhost:5000/api/tasks/${updatedTask._id}`, updatedTask);
+            const response = await axios.put(`${BASE_URL}/api/tasks/${updatedTask._id}`, updatedTask);
             if (response.status === 200) {
                 toast.success('Updated Successfully');
                 console.log('Task updated');
@@ -51,7 +52,7 @@ export default function TaskTile({ details, onDelete }) {
     };
 
     return (
-        <div className="w-full ">
+        <div className="w-full mb-2">
             {details.map((detail, index) => (
                 <div key={index} className="p-4 rounded-lg shadow-md mt-3 border bg-white">
                     {editingRow === index ? (

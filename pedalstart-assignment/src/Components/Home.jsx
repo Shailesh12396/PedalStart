@@ -4,6 +4,7 @@ import TaskTile from './TaskTile';
 import Loading from '../Loading/Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {BASE_URL} from './../Url_Config'
 
 function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,11 +27,12 @@ function Home() {
     };
 
     const handleSubmit = async () => {
+        const utcDate = new Date(date).toISOString();
         console.log(date, title, description);
         try {
-            const response = await axios.post('http://localhost:5000/api/tasks', {
+            const response = await axios.post(`${BASE_URL}/api/tasks`, {
                 title: title,
-                date: date,
+                date: utcDate,
                 description: description
             });
 
@@ -54,7 +56,7 @@ function Home() {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+            const response = await axios.delete(`${BASE_URL}/api/tasks/${id}`);
             if (response.status === 200) {
                 toast.success('Successfully Deleted');
                 setDetails(prevDetails => prevDetails.filter(task => task._id !== id));
@@ -70,7 +72,7 @@ function Home() {
         const fetchTask = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:5000/api/tasks');
+                const response = await axios.get(`${BASE_URL}/api/tasks`);
                 if (response.status === 200) {
                     setDetails(response.data);
                     console.log('Fetched tasks:', response.data);
@@ -85,7 +87,7 @@ function Home() {
     }, []);
 
     return (
-        <div className='border border-gray-200 shadow-md rounded-lg'>
+        <div className='border border-gray-200 shadow-md rounded-lg px-3'>
             <div className='flex flex-col sm:flex-row justify-between items-center p-2'>
                 <div className='text-lg font-medium'>Shailesh's Task Scheduler</div>
                 <div className="mt-3 sm:mt-0">

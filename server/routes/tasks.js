@@ -9,8 +9,10 @@ router.post('/', async (req, res) => {
   if (!title || !description || !date) {
     return res.status(400).json({ message: 'Please provide title, description, and date' });
   }
-  try {    
-    const newTask = new Task({ title, description, date });
+  try {
+    const parsedDate = new Date(date);
+    console.log(parsedDate)
+    const newTask = new Task({ title, description, date: parsedDate });
     await newTask.save();
     res.status(201).json({ message: 'Successfully Created' });
   } catch (error) {
