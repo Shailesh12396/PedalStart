@@ -11,17 +11,16 @@ const PORT =  5000;
 app.use(cors());
 app.use(express.json());
 
+const URL=process.env.DB_URL;
+const connection = async ()=>{
+  await mongoose.connect(URL, {dbName:'pedalstart'});
+  // db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  // db.once('open', () => {
+  //   console.log('Connected to MongoDB');
+  // });
+}
 
-mongoose.connect(process.env.DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-});
-
+connection();
 
 app.use('/api/tasks', taskRoutes);
 
